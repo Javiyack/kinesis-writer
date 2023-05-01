@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Escritura en Kinesis</title>
+</head>
+
+<body>
+  <h1>Escritura en Kinesis</h1>
+  <form id="kinesisForm">
+    <label for="data">Datos:</label>
+    <input type="text" id="data" name="data" required>
+    <br>
+    <button type="submit">Enviar a Kinesis</button>
+  </form>
+
+  <h2>Streams de Kinesis existentes:</h2>
+  <button id="listStreamsButton">Listar Streams</button>
+  <ul id="streamList"></ul>
+
+  <h2>Funciones Lambda existentes:</h2>
+  <button id="listLambdasButton">Listar Lambdas</button>
+  <ul id="lambdaList"></ul>
+
+
+  <h2>Funciones DynamoDB existentes:</h2>
+  <button id="listDynamoDBsButton">Listar DynamoDB</button>
+  <ul id="dynamoDBList"></ul>
+
+  <script>
+    document.getElementById("kinesisForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      var data = document.getElementById("data").value;
+
+      // Realiza una petición POST al servidor
+      fetch("/write-to-kinesis", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ data: data })
+      })
+        .then(response => response.text())
+        .then(result => {
+          alert(result);
+          document.getElementById("kinesisForm").reset();
+        })
+        .catch(error => {
+          console.error(error);
+          alert("Error al enviar los datos a Kinesis");
+        });
+    });
+
+    document.getElementById("listStreamsButton").addEventListener("click", function () {
+      fetch("/list-streams")
+        .then(response => response.json())
+        .then(data => {
+          const streamList = document.getElementById("streamList");
+          streamList.innerHTML = "";
+          alert(`data: ${JSON.stringify(data)}`);
+          data.forEach(streamName => {
+            const li = document.createElement("li");
+            li.textContent = streamName;
+            streamList.appendChild(li);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+          alert(`ERROR al listar los streams de Kinesis: ${error}`);
+        });
+    });
+
+    document.getElementById("listLambdasButton").addEventListener("click", function () {
+      fetch("/list-lambdas")
+        .then(response => response.json())
+        .then(data => {
+          const streamList = document.getElementById("lambdaList");
+          streamList.innerHTML = "";
+          alert(`data: ${JSON.stringify(data)}`);
+          data.forEach(streamName => {
+            const li = document.createElement("li");
+            li.textContent = streamName;
+            streamList.appendChild(li);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+          alert(`ERROR al listar las lambdas: ${error}`);
+        });
+    });
+
+    document.getElementById("listDynamoDBsButton").addEventListener("click", function () {
+      fetch("/list-tables")
+        .then(response => {
+          alert(`response: ${JSON.stringify(response)}`);
+          alert(`response: ${JSON.stringify(response)}`);
+          response.json()
+        })
+        .then(data => {
+          const streamList = document.getElementById("dynamoDBList");
+          streamList.innerHTML = "";
+          alert(`data:`);
+          alert(`data: ${data}`);
+          data.forEach(streamName => {
+            const li = document.createElement("li");
+            li.textContent = streamName;
+            streamList.appendChild(li);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+          alert(`ERROR al listar los DynamoDBs: ${error}`);
+        });
+    });
+
+  </script>
+</body>
+
+</html>
