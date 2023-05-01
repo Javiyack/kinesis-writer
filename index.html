@@ -43,7 +43,6 @@
       })
         .then(response => response.text())
         .then(result => {
-          alert(result);
           document.getElementById("kinesisForm").reset();
         })
         .catch(error => {
@@ -58,7 +57,6 @@
         .then(data => {
           const streamList = document.getElementById("streamList");
           streamList.innerHTML = "";
-          alert(`data: ${JSON.stringify(data)}`);
           data.forEach(streamName => {
             const li = document.createElement("li");
             li.textContent = streamName;
@@ -77,7 +75,6 @@
         .then(data => {
           const streamList = document.getElementById("lambdaList");
           streamList.innerHTML = "";
-          alert(`data: ${JSON.stringify(data)}`);
           data.forEach(streamName => {
             const li = document.createElement("li");
             li.textContent = streamName;
@@ -92,16 +89,10 @@
 
     document.getElementById("listDynamoDBsButton").addEventListener("click", function () {
       fetch("/list-tables")
-        .then(response => {
-          alert(`response: ${JSON.stringify(response)}`);
-          alert(`response: ${JSON.stringify(response)}`);
-          response.json()
-        })
+        .then(response => response.json())
         .then(data => {
           const streamList = document.getElementById("dynamoDBList");
           streamList.innerHTML = "";
-          alert(`data:`);
-          alert(`data: ${data}`);
           data.forEach(streamName => {
             const li = document.createElement("li");
             li.textContent = streamName;

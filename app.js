@@ -111,7 +111,7 @@ app.get('/list-tables', async (req, res) => {
         console.log('Tablas de DynamoDB:');
         const response = await dynamodb.listTables().promise();
         const tableNames = response.TableNames;
-        console.log('Tablas de DynamoDB:', response);
+        console.log('  - Tablas de DynamoDB:', response);
         res.status(200).json(tableNames);
     } catch (error) {
         console.log(`Error al ejecutar el comando list-tables: ${error}`);
@@ -120,23 +120,6 @@ app.get('/list-tables', async (req, res) => {
     }
 });
 
-
-app.get('/list-tables1', async (req, res) => {
-    const command = 'aws dynamodb list-tables --endpoint-url http://localhost:4566';
-
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.log(`Error al ejecutar el comando: ${error}`);
-            res.status(500).json({ error: 'Error al obtener la lista de streams de Kinesis' });
-        } else {
-            const result = JSON.parse(stdout);
-            console.log("result=" + JSON.stringify(result))
-            console.log("StreamNames=" + result.TableNames)
-            const streamList = stdout.trim().split('\n').map(stream => stream.trim());
-            res.status(200).json(result.TableNames);
-        }
-    });
-});
 // Inicia el servidor
 app.listen(3000, () => {
     console.log('Servidor escuchando en el puerto 3000');
