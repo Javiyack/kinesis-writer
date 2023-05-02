@@ -4,7 +4,12 @@ const { exec } = require('child_process');
 const app = express();
 
 // Configura la región
-AWS.config.update({ region: 'us-east-1' }); // Reemplaza 'us-east-1' con tu región preferida
+AWS.config.update({
+    endpoint: 'http://localhost:4566',
+    region: 'us-east-1', // Reemplaza con tu región preferida
+    accessKeyId: 'localstack', // Reemplaza con tus propias credenciales de acceso
+    secretAccessKey: 'localstack', // Reemplaza con tus propias credenciales de acceso
+}); // Reemplaza 'us-east-1' con tu región preferida
 
 // Configurar el AWS SDK para apuntar al endpoint de LocalStack
 const kinesis = new AWS.Kinesis({
